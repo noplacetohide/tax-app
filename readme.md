@@ -1,6 +1,3 @@
-Sure! Here's the complete `README.md` content in plain Markdown format:
-
-````md
 # Tax App
 
 This project consists of a **client** and a **backend** for managing tax-related operations. Follow the steps below to set up and run the application locally.
@@ -22,7 +19,6 @@ This project consists of a **client** and a **backend** for managing tax-related
 ```bash
 cd tax-app
 ```
-````
 
 ### 2. Use Correct Node Version
 

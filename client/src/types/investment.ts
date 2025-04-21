@@ -26,4 +26,5 @@ export type InvestmentStatsTypes = {
         long_term_net_income: number;
         tax: number;
     };
+    fyCount: number;
 };

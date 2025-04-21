@@ -178,7 +178,6 @@ export class InvestmentsService {
     }
 
     async getInvestmentByHoldingTime(
-
         user: User,
         filters: FilterInvestmentsDto,
     ) {
@@ -228,8 +227,11 @@ export class InvestmentsService {
         try {
             let {
                 isActive = 'true',
+                fy = '2025'
             } = filters;
-
+            fy = fy || '2025';
+            const start_date = new Date(`${fy}-01-01`).toISOString();
+            const end_date = new Date(`${fy}-12-31`).toISOString();
             const oneYearAgo = new Date();
             oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
@@ -252,9 +254,13 @@ export class InvestmentsService {
             const longTermQuery = baseQueryBuilder()
                 .andWhere('(investments.buy_date <= :date AND investments.sell_date IS NOT NULL)', { date: oneYearAgo });
 
-            const [shortTerm, longTerm] = await Promise.all([
+            const fyInvestmentQuery = baseQueryBuilder()
+                .andWhere('investments.buy_date >= :date', { date: start_date });
+
+            const [shortTerm, longTerm, fyCount] = await Promise.all([
                 shortTermQuery.getManyAndCount(),
-                longTermQuery.getManyAndCount()
+                longTermQuery.getManyAndCount(),
+                fyInvestmentQuery.getCount()
             ]);
 
             const shortTermTaxInput = shortTerm[0].reduce(
@@ -287,7 +293,8 @@ export class InvestmentsService {
                     ...longTermTaxInput,
                     long_term_net_income,
                     tax: calculateIncomeTax(long_term_net_income, 'long_term')
-                }
+                },
+                fyCount
             };
         } catch (error) {
             throw error;

@@ -1,21 +1,14 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 
 import OverviewInfoCard from '@/components/base/OverviewInfoCard';
 import { Select } from '@/components/base/Select';
 import api from '@/lib/axios';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { formatMoney, getInvestmentQuery } from '@/lib/investmentHelpers';
+import { formatMoney } from '@/lib/investmentHelpers';
 import InvestmentTableByHoldingType from '@/components/taxes/InvestmentTableByHoldingType';
 import FYInvestment from '@/components/taxes/FYInvestment';
 import { InvestmentStatsTypes } from '@/types/investment';
 
-const INVESTMENT_TYPES = [
-    { label: 'Equity', value: 'EQUITY' },
-    { label: 'Mutual Fund', value: 'MUTUAL_FUND' },
-];
 const INVESTMENT_YEARS = [
     { label: 'FY-2025', value: '2025' },
     { label: 'FY-2024', value: '2024' },
@@ -23,22 +16,7 @@ const INVESTMENT_YEARS = [
     { label: 'FY-2022', value: '2022' },
     { label: 'FY-2021', value: '2021' },
 ]
-const INIT_PAGINATION_STATE = {
-    total: 0,
-    limit: 10,
-    page: 1,
-    totalPages: 0
-}
 
-const investmentFormSchema = z.object({
-    name: z.string().min(1, { message: 'Investment name is mandatory.' }),
-    buy_amount: z.coerce.number().min(1, { message: 'Invalid buy amount.' }),
-    sell_amount: z.coerce.number().optional(),
-    type: z.string().min(1, { message: 'Investment type is required.' }),
-    buy_date: z.string().min(1, { message: 'Start date is required.' }),
-    sell_date: z.string().nullable().optional(),
-    notes: z.string().optional(),
-});
 const STATS_INIT = {
     "short_term": {
         "buy": 0,
@@ -51,26 +29,25 @@ const STATS_INIT = {
         "sell": 0,
         "long_term_net_income": 0,
         "tax": 0
-    }
+    },
+    "fyCount": 0
 }
 export default function Taxes() {
     const [investment, setInvestment] = useState<InvestmentStatsTypes>(STATS_INIT);
-    const [pagination, setPagination] = useState(INIT_PAGINATION_STATE);
     const [filters, setFilters] = useState({ fy: '2025' });
 
     const fetchInvestments = async () => {
         try {
-            const { data } = await api.get(`api/v1/investments/investment-stats`);
+            const { data } = await api.get(`api/v1/investments/investment-stats?fy=${filters.fy}`);
             setInvestment(data);
         } catch (error) {
             console.error(error)
         }
     }
 
-
     useEffect(() => {
         fetchInvestments();
-    }, [pagination.page, filters.fy]);
+    }, [filters.fy]);
 
     return (
         <div className="p-6">
@@ -94,7 +71,7 @@ export default function Taxes() {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4'>
                 <OverviewInfoCard
                     title='Investment Counts'
-                    value={pagination?.total}
+                    value={investment?.fyCount || '-'}
                     description={`This count is for the FY-${filters.fy}`}
                 />
                 <OverviewInfoCard
