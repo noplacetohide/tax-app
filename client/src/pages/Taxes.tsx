@@ -8,6 +8,9 @@ import { formatMoney } from '@/lib/investmentHelpers';
 import InvestmentTableByHoldingType from '@/components/taxes/InvestmentTableByHoldingType';
 import FYInvestment from '@/components/taxes/FYInvestment';
 import { InvestmentStatsTypes } from '@/types/investment';
+import ShortTermTaxInfo from '@/components/taxes/TaxInfo';
+import LongTermTaxInfo from '@/components/taxes/LongTermTaxInfo';
+import TaxInfo from '@/components/taxes/TaxInfo';
 
 const INVESTMENT_YEARS = [
     { label: 'FY-2025', value: '2025' },
@@ -88,6 +91,10 @@ export default function Taxes() {
             <FYInvestment fy={filters.fy} title={`Your Investments FY-[${filters.fy}]`} />
             <InvestmentTableByHoldingType holdingType='LONG_TERM' title="Your Long Term Investments" />
             <InvestmentTableByHoldingType holdingType='SHORT_TERM' title="Your Short Term Investments" />
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+                <TaxInfo type="SHORT_TERM" title='Ordinary Income Tax Rates (Short Term Tax)' />
+                <TaxInfo type='LONG_TERM' title='Long-Term Capital Gains Tax Rates' />
+            </div>
         </div >
     )
 }

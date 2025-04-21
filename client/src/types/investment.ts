@@ -28,3 +28,15 @@ export type InvestmentStatsTypes = {
     };
     fyCount: number;
 };
+
+type TaxRate = `${number}%`;
+
+interface IncomeRange {
+    min_income: number;
+    max_income: number | null;
+}
+
+export type TaxBracket = {
+    tax_rate: TaxRate;
+    single_filer: IncomeRange;
+}
