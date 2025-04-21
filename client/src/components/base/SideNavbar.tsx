@@ -21,7 +21,7 @@ const Loader = () => (
 
 export default function SidebarNavigation() {
     const [collapsed, setCollapsed] = useState(true);
-    const [activeComponent, setActiveComponent] = useState('taxes');
+    const [activeComponent, setActiveComponent] = useState('investments');
     const [user, setUser] = useState({ name: '', email: '', role: '' });
     const [loading, setLoading] = useState(false);
     const [targetComponent, setTargetComponent] = useState('investments');
@@ -29,7 +29,7 @@ export default function SidebarNavigation() {
 
     const navItems = [
         { id: 'investments', label: 'Investments', icon: <BarChart2 size={20} /> },
-        { id: 'taxes', label: 'taxes', icon: <FileText size={20} /> },
+        { id: 'taxes', label: 'Taxes', icon: <FileText size={20} /> },
     ];
 
     const handleNavigation = (componentId: string) => {
