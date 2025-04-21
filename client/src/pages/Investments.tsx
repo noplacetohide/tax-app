@@ -38,6 +38,7 @@ import {
 import { InvestmentType } from '@/types/investment';
 import { formatMoney, getInvestmentHoldingType, getInvestmentQuery } from '@/lib/investmentHelpers';
 import { Badge } from '@/components/ui/badge';
+import toast from 'react-hot-toast';
 
 const INVESTMENT_TYPES = [
     { label: 'Equity', value: 'EQUITY' },
@@ -108,11 +109,14 @@ export default function Investments() {
                 formState = { ...formState, id: undefined };
                 await api.post('/api/v1/investments', formState);
             }
-
             await fetchInvestments();
             setOpenInvestmentModel(false);
+            toast.success('Your investment has been recorded!');
+
         } catch (error) {
             console.error("Error submitting form:", error);
+            toast.error('Unable to save investments!');
+
         } finally {
             setIsButtonDisabled(false);
             form.reset(FORM_INIT_OBJECT);

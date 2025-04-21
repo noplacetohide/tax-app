@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button"
+import toast, { Toaster } from 'react-hot-toast';
 import {
     Card,
     CardContent,
@@ -31,8 +32,8 @@ export default function page() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: "admin@gmail.com",
-            password: "222112",
+            email: "demouser@gmail.com",
+            password: "Pass@User",
         },
     });
 
@@ -46,9 +47,10 @@ export default function page() {
                 path: '/',
             });
             localStorage.setItem('user', JSON.stringify(user));
+            toast.success('You are authorized to access!');
             router.push('/');
         } catch (error) {
-            console.error(error)
+            toast.error('Login attempt failed!');
         } finally {
             setIsButtonDisabled(false);
         }
