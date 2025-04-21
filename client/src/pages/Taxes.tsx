@@ -80,12 +80,12 @@ export default function Taxes() {
                 <OverviewInfoCard
                     title='Short Term Tax'
                     value={investment?.short_term?.tax ?? '-'}
-                    description={`${investment?.short_term?.tax}Your total buy value is ${formatMoney(investment?.short_term?.buy)}, sell value is ${formatMoney(investment?.short_term?.sell)}, and net gain is ${formatMoney(investment?.short_term?.short_term_net_income)}`}
+                    description={`Your total buy value is ${formatMoney(investment?.short_term?.buy)}, sell value is ${formatMoney(investment?.short_term?.sell)}, and net gain is ${formatMoney(investment?.short_term?.short_term_net_income)}`}
                 />
                 <OverviewInfoCard
                     title='Long Term Tax'
                     value={investment?.long_term?.tax ?? '-'}
-                    description={`${investment?.long_term?.tax}Your total buy value is ${formatMoney(investment?.long_term?.buy)}, sell value is ${formatMoney(investment?.long_term?.sell)}, and net gain is ${formatMoney(investment?.long_term?.long_term_net_income)}`}
+                    description={`Your total buy value is ${formatMoney(investment?.long_term?.buy)}, sell value is ${formatMoney(investment?.long_term?.sell)}, and net gain is ${formatMoney(investment?.long_term?.long_term_net_income)}`}
                 />
             </div>
             <FYInvestment fy={filters.fy} title={`Your Investments FY-[${filters.fy}]`} />
